@@ -1,5 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://json.schemastore.org/github-action.json": "file:///home/tharun/tharun/git_action/argocd_action/argocd-demo/.github/workflow/main.yaml"
-    }
-}
