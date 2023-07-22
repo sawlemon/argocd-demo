@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-spec
+data:
+  mapUsers: |
+    - userarn: {}
+      username: argocd-spec
+      groups:
+        - argocd-role

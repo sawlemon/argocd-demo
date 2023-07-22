@@ -1,0 +1,49 @@
+name: maven-springboot-project
+
+on: workflow_dispatch
+
+jobs:
+  argocd_install:
+    permissions:
+      id-token: write
+      contents: read
+    run-on: ubuntu-22.o4
+    env:
+      REGIN: us-east-1
+    steps:
+      - name: git checkout
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials from Test account
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.ARN_AWS }}
+          aws-region: ${{ env.REGION }}
+
+      # - name: deploy argocd
+      #   run: |
+      #     kubectl create namespace argocd
+      #     kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+      #     kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+      # - name: deploy permission for argocd
+      #   run: |
+      #     sleep 100
+      #     kubectl apply -f ./argocd .
+      - name: Push to another repo
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FILE: kubernetes_helm
+        run: |
+          git config --global user.email "${{ secrets.GITHUB_MAIL }}"
+          git config --global user.name "${{ secret.GITHUB_NAME }}"
+
+          git init
+          git add ${{env.FILE}}
+          git commit -m "${{github.run_number}}"
+          git branch -M main
+          git remote add origin https://github.com/THARUN13055/argocd.git
+          git push -u origin main
+      
+      
+
+      

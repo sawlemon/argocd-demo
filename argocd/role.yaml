@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argocd-role
+rules:
+  - apiGroups: [""]
+    resources: ["Namespace"]
+    resourceNames: ["argocd"]
+    verbs: ["get","list","watch"]
+
+      
+    
