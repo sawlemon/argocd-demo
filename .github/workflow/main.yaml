@@ -1,6 +1,18 @@
 name: maven-springboot-project
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+    inputs:
+      deploy_argocd:
+        description: 'if you need to install argocd (yes or no)'
+        required: true
+        default: 'no'
+      
+      argocd_rbac:
+        description: 'any change occurs in rbac_argocd (yes or no)'
+        required: true
+        default: 'no'
+      
 
 jobs:
   argocd_install:
@@ -20,16 +32,29 @@ jobs:
           role-to-assume: ${{ secrets.ARN_AWS }}
           aws-region: ${{ env.REGION }}
 
-      # - name: deploy argocd
-      #   run: |
-      #     kubectl create namespace argocd
-      #     kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-      #     kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
-      # - name: deploy permission for argocd
-      #   run: |
-      #     sleep 100
-      #     kubectl apply -f ./argocd .
+      - name: deploy argocd
+        continue-on-error: true
+        run: |
+          if [ "${{ github.event.inputs.deploy_argocd }}" = "yes" ]; then
+            kubectl create namespace argocd
+            kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+            kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "NodePort"}}'
+          else
+            echo "No changes in deployment"
+          fi
+
+      - name: deploy permission for argocd
+        continue-on-error: true
+        run: |
+          if [ "${{ github.event.inputs.argocd_rbac }}" = "yes" ]; then
+            sleep 100
+            kubectl apply -f ./argocd .
+          else
+              echo "No change in permission"
+          fi
+
       - name: Push to another repo
+        if: ${{ success() }}
         env: 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FILE: kubernetes_helm
@@ -43,7 +68,4 @@ jobs:
           git branch -M main
           git remote add origin https://github.com/THARUN13055/argocd.git
           git push -u origin main
-      
-      
-
       
