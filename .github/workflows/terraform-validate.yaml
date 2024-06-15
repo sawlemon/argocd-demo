@@ -22,9 +22,9 @@ jobs:
           terraform_version: 1.5.7 # Specify the desired Terraform version
 
       - name: Initialize Terraform
-        working-directory: example/terraform
+        working-directory: terraform
         run: terraform init
 
       - name: Validate Terraform configuration
-        working-directory: example/terraform
+        working-directory: terraform
         run: terraform validate
