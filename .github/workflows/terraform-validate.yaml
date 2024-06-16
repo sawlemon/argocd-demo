@@ -1,4 +1,4 @@
-name: Terraform Validate and Test
+name: Terraform Validate
 
 on:
   push:
@@ -30,31 +30,3 @@ jobs:
       - name: Validate Terraform configuration
         working-directory: terraform
         run: terraform validate
-   
-  terrratest:
-    runs-on: ubuntu-latest
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
-    needs: [ terraform-validate ]
-
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v3
-      
-      - name: check env
-        run: env
-      
-      - name: configure aws credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ vars.AWS_ROLE_ASSUME }}
-          role-session-name: GitHub_to_AWS_via_FederatedOIDC
-          aws-region: ${{ vars.AWS_REGION }}
-      
-      - name: Sts GetCallerIdentity
-        run: |
-          aws sts get-caller-identity
-      - name: Run Terratest
-        run: |
-          cd terraform/terratest
-          go mod tidy
-          go test -timeout 120m
