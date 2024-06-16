@@ -1,0 +1,20 @@
+name: Restrict PR Creation
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  restrict-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR author
+        run: |
+          ALLOWED_USERS=("sawlemon" "THARUN13055")
+          PR_AUTHOR=$(jq -r '.pull_request.user.login' "$GITHUB_EVENT_PATH")
+          if [[ ! " ${ALLOWED_USERS[@]} " =~ " ${PR_AUTHOR} " ]]; then
+            echo "Unauthorized user: $PR_AUTHOR"
+            echo "::error::Only specific users can create PRs."
+            exit 1
+          fi

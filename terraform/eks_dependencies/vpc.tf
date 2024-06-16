@@ -1,8 +1,3 @@
-# main.tf
-provider "aws" {
-  region = var.region # Specify the AWS region
-}
-
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.8.1"

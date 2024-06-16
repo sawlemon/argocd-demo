@@ -7,7 +7,7 @@ module "eks" {
 
   # Default behaviour
   # for more info read https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html#modify-endpoint-access
-  cluster_endpoint_public_access = true
+  cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = false
 
   cluster_addons = {
@@ -36,7 +36,7 @@ module "eks" {
       max_size     = 10
       desired_size = 1
 
-      instance_types = ["t3.large"]
+      instance_types = ["t3.small"]
       capacity_type  = "SPOT"
     }
   }

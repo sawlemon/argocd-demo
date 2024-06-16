@@ -1,9 +1,3 @@
-variable "region" {
-  type        = string
-  description = "AWS Region"
-  default     = "us-east-1"
-}
-
 variable "vpc_name" {
   type    = string
   default = "cicd-demo-vpc"
@@ -64,6 +58,6 @@ variable "vpc_tags" {
     Name       = "cicd-demo-vpc"
     managed_by = "Terraform"
     created_by = "sawlemon"
-    pupose     = "testing"
+    pupose     = "handson"
   }
 }

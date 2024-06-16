@@ -35,9 +35,9 @@ variable "eks_tags" {
   description = "Tags to apply to the EKS cluster."
   type        = map(string)
   default = {
-    Name       = "cicd-demo-vpc"
+    Name       = "cicd-demo-cluster"
     managed_by = "Terraform"
     created_by = "sawlemon"
-    pupose     = "testing"
+    pupose     = "handson"
   }
 }
