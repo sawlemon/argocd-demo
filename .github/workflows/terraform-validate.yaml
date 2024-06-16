@@ -56,4 +56,5 @@ jobs:
       - name: Run Terratest
         run: |
           cd terraform/terratest
+          go mod tidy
           go test -timeout 120m
