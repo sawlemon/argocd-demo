@@ -4,11 +4,6 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "terraform_aws_vpc_module_version" {
-  type    = string
-  default = "5.8.1" # Latest version as of writing this code
-}
-
 variable "vpc_name" {
   type    = string
   default = "cicd-demo-vpc"
