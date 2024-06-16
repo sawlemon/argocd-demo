@@ -28,7 +28,7 @@ jobs:
         working-directory: terraform
         run: terraform validate
    
-   terrratest:
+  terrratest:
     runs-on: ubuntu-latest
     if: ${{ always() && contains(join(needs.*.result, ','), 'success') }}
     needs: [ terraform-validate ]
