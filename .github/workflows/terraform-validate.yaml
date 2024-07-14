@@ -7,10 +7,7 @@ on:
   pull_request:
     paths:
       - 'terraform/**'
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read   
-
+      
 jobs:
   terraform-validate:
     runs-on: ubuntu-latest
